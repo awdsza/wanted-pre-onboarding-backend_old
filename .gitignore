@@ -3,7 +3,6 @@
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-application.yml
 HELP.md
 
 ### IntelliJ IDEA ###
@@ -14,3 +13,4 @@ HELP.md
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+Note about fast-forwards
