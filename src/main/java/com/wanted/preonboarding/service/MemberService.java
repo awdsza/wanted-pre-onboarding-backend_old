@@ -15,7 +15,7 @@ public class MemberService {
 
     private void isDuplicateMember(String email){
         List<Member> members = memberRepository.findMemberByName(email);
-        if(members.isEmpty()){
+        if(!members.isEmpty()){
             throw new IllegalArgumentException("중복된 이메일 입니다");
         }
     }
