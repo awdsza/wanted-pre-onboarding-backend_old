@@ -22,8 +22,8 @@ public class MemberService {
 
     @Transactional
     public Long save(MemberForm memberForm){
-        Member newMember = Member.createNewMember(memberForm.getEmail(), memberForm.getPassword());
         isDuplicateMember(memberForm.getEmail());
+        Member newMember = Member.createNewMember(memberForm.getEmail(), memberForm.getPassword());
         return memberRepository.save(newMember);
     }
 }
