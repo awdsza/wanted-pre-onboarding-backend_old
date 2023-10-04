@@ -29,21 +29,27 @@ class MemberServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private Encryptor encryptor;
+    private String email;
+    private String decryptPassword;
+
+    @BeforeEach
+    public void beforeEach(){
+        email = "ljy1283@wanted.com";
+        decryptPassword="test1234";
+    }
+
 
     @Test
     public void 멤버등록테스트() throws NoSuchAlgorithmException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException {
-        String email = "ljy1283@wanted.com";
 
-        String password = encryptor.encryptMessage("test1234".getBytes(StandardCharsets.UTF_8));
+        String password = encryptor.encryptMessage(decryptPassword.getBytes(StandardCharsets.UTF_8));
         Member newMember = Member.createNewMember(email, password);
         Long saveId = memberRepository.save(newMember);
-        Assertions.assertThat(saveId).isEqualTo(1);
+        Assertions.assertThat(saveId).isEqualTo(6L);
     }
     @Test
     public void 로그인테스트() throws NoSuchAlgorithmException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException {
-        String email = "ljy1283@wanted.com";
-
-        String password = encryptor.encryptMessage("test1234".getBytes(StandardCharsets.UTF_8));
+        String password = encryptor.encryptMessage(decryptPassword.getBytes(StandardCharsets.UTF_8));
 
         Member newMember = Member.createNewMember(email, password);
         Long saveId = memberRepository.save(newMember);
