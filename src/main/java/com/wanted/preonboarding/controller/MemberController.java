@@ -5,11 +5,13 @@ import com.wanted.preonboarding.dto.MemberForm;
 import com.wanted.preonboarding.dto.ResponseDto;
 import com.wanted.preonboarding.exception.EncryptException;
 import com.wanted.preonboarding.service.MemberService;
+import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +60,8 @@ public class MemberController {
             return new ResponseEntity<>(new ResponseDto<String>("로그인을 성공했습니다",token), HttpStatus.OK);
         }catch(InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException e){
             throw new EncryptException();
+        }catch(EmptyResultDataAccessException nre){
+            return new ResponseEntity<>(new ResponseDto<String>("아이디 또는 비밀번호가 틀렸습니다.",""),HttpStatus.OK);
         }
 
     }
@@ -68,4 +72,8 @@ public class MemberController {
         return new ResponseEntity<>(new ResponseDto<>("로그아웃에 성공했습니다.",""), HttpStatus.OK);
     }
 
+    @ExceptionHandler(value= EncryptException.class)
+    public Object encryptException(IllegalArgumentException e){
+        return new ResponseEntity<>(new ResponseDto<String>(e.getMessage(),null),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

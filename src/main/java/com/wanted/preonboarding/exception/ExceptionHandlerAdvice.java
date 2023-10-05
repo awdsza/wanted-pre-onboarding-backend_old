@@ -28,8 +28,5 @@ public class ExceptionHandlerAdvice {
     public Object illegalArgumentException(IllegalArgumentException e){
         return new ResponseEntity<>(new ResponseDto<String>(e.getMessage(),null),HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    @ExceptionHandler(value= EncryptException.class)
-    public Object encryptException(IllegalArgumentException e){
-        return new ResponseEntity<>(new ResponseDto<String>(e.getMessage(),null),HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+
 }
