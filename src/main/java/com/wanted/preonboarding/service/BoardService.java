@@ -3,6 +3,7 @@ package com.wanted.preonboarding.service;
 import com.wanted.preonboarding.dto.BoardForm;
 import com.wanted.preonboarding.dto.SearchBoardForm;
 import com.wanted.preonboarding.entity.Board;
+import com.wanted.preonboarding.exception.InvalidUserDifferentException;
 import com.wanted.preonboarding.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,17 @@ public class BoardService {
     public List<Board> selectBoardList(SearchBoardForm form){
         return boardRepository.findAll(form);
     }
+
     public Board selectBoard(Long id){
         return boardRepository.find(id);
+    }
+
+    @Transactional
+    public void updateBoard(Long id, BoardForm boardForm){
+        Board board = selectBoard(id);
+        if(!board.getCreator().equals(boardForm.getAuthor())){
+            throw new InvalidUserDifferentException("작성자만 게시물을 수정할 수 있습니다");
+        }
+        board.updateBoard(board,boardForm);
     }
 }
