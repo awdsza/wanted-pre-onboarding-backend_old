@@ -96,4 +96,12 @@ class BoardServiceTest {
         boardService.updateBoard(10L, boardForm);
         Assertions.assertEquals(boardForm.getContent(),"나는 솔로아니다....");
     }
+    @Test
+    public void 게시판삭제테스트(){
+        Long id = 10L;
+        String email = "lee1234@wanted.com";
+        boardService.deleteBoard(id,email);
+        Board board = boardService.selectBoard(id);
+        Assertions.assertNull(board);
+    }
 }

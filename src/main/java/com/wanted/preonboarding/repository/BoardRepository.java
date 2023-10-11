@@ -59,4 +59,7 @@ public class BoardRepository {
     public Board find(Long id){
         return em.find(Board.class,id);
     }
+    public void delete(Board board){
+        em.remove(board);
+    }
 }

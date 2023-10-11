@@ -37,4 +37,12 @@ public class BoardService {
         }
         board.updateBoard(board,boardForm);
     }
+    @Transactional
+    public void deleteBoard(Long id,String email){
+        Board board = boardRepository.find(id);
+        if(!board.getCreator().equals(email)){
+            throw new InvalidUserDifferentException("작성자만 게시물을 삭제할 수 있습니다");
+        }
+        boardRepository.delete(board);
+    }
 }
