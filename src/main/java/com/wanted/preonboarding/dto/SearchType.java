@@ -3,16 +3,14 @@ package com.wanted.preonboarding.dto;
 import io.micrometer.common.util.StringUtils;
 
 public enum SearchType {
-    TITLE("title"),CONTENTS("contents"),TITLEANDCONTENTS("titlecontents");
+    TITLE("title","제목"),CONTENTS("contents","내용"),TITLEANDCONTENTS("titlecontents","제목&내용");
 
     private String value;
+    private String valueName;
 
-    SearchType(String value) {
+    SearchType(String value, String valueName) {
         this.value = value;
-    }
-
-    public String getKey(){
-        return name();
+        this.valueName = valueName;
     }
     public static SearchType getValue(String code){
         if(StringUtils.isBlank(code)){
