@@ -1,7 +1,9 @@
 package com.wanted.preonboarding.dto;
 
 import io.micrometer.common.util.StringUtils;
+import lombok.Getter;
 
+@Getter
 public enum SearchType {
     TITLE("title","제목"),CONTENTS("contents","내용"),TITLEANDCONTENTS("titlecontents","제목&내용");
 
