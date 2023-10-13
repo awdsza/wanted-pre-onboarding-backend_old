@@ -57,7 +57,7 @@ class BoardServiceTest {
     }
     @Test
     public void 게시판검색테스트(){
-        SearchBoardForm searchBoardForm = SearchBoardForm.createForm("일본", SearchType.TITLE,1);
+        SearchBoardForm searchBoardForm = new SearchBoardForm("일본", SearchType.TITLE,1);
         List<Board> list = boardService.selectBoardList(searchBoardForm);
         System.out.println("list.size() = " + list.size());
         Assertions.assertNotNull(list.size());
