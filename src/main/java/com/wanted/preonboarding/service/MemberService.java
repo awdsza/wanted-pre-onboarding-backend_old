@@ -26,4 +26,9 @@ public class MemberService {
         Member newMember = Member.createNewMember(memberForm.getEmail(), memberForm.getPassword());
         return memberRepository.save(newMember);
     }
+
+    public String login(MemberForm memberForm){
+        Member member = memberRepository.findMember(memberForm.getEmail(), memberForm.getPassword());
+        return JWTTokenUtil.createToken("email",member.getEmail());
+    }
 }
