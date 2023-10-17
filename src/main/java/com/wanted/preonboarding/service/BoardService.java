@@ -4,6 +4,7 @@ import com.wanted.preonboarding.dto.BoardForm;
 import com.wanted.preonboarding.dto.SearchBoardForm;
 import com.wanted.preonboarding.entity.Board;
 import com.wanted.preonboarding.exception.InvalidUserDifferentException;
+import com.wanted.preonboarding.exception.NotExistBoardException;
 import com.wanted.preonboarding.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class BoardService {
     @Transactional
     public void updateBoard(Long id, BoardForm boardForm){
         Board board = selectBoard(id);
+        if(board == null){
+            throw new NotExistBoardException("해당게시물을 찾을수 없습니다");
+        }
         if(!board.getCreator().equals(boardForm.getAuthor())){
             throw new InvalidUserDifferentException("작성자만 게시물을 수정할 수 있습니다");
         }
@@ -40,6 +44,9 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Long id,String email){
         Board board = boardRepository.find(id);
+        if(board == null){
+            throw new NotExistBoardException("해당게시물을 찾을수 없습니다");
+        }
         if(!board.getCreator().equals(email)){
             throw new InvalidUserDifferentException("작성자만 게시물을 삭제할 수 있습니다");
         }
