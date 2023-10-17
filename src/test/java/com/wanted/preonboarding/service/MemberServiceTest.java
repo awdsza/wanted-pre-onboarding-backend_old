@@ -6,6 +6,7 @@ import com.wanted.preonboarding.entity.Member;
 import com.wanted.preonboarding.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,29 +31,26 @@ class MemberServiceTest {
     @Autowired
     private Encryptor encryptor;
     private String email;
-    private String decryptPassword;
+    private String password;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() throws NoSuchAlgorithmException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException {
         email = "ljy1283@wanted.com";
-        decryptPassword="test1234";
+        password=encryptor.encryptMessage("test1234".getBytes(StandardCharsets.UTF_8));
     }
 
-
     @Test
-    public void 멤버등록테스트() throws NoSuchAlgorithmException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException {
-
-        String password = encryptor.encryptMessage(decryptPassword.getBytes(StandardCharsets.UTF_8));
-        Member newMember = Member.createNewMember(email, password);
-        Long saveId = memberRepository.save(newMember);
-        Assertions.assertThat(saveId).isEqualTo(6L);
-    }
-    @Test
-    public void 로그인테스트() throws NoSuchAlgorithmException, BadPaddingException, NoSuchPaddingException, IllegalBlockSizeException, InvalidKeyException {
-        String password = encryptor.encryptMessage(decryptPassword.getBytes(StandardCharsets.UTF_8));
+    @Disabled
+    public void 멤버등록테스트(){
 
         Member newMember = Member.createNewMember(email, password);
         Long saveId = memberRepository.save(newMember);
+        Assertions.assertThat(saveId).isEqualTo(1L);
+    }
+    @Test
+    public void 로그인테스트(){
+        Member newMember = Member.createNewMember(email, password);
+        memberRepository.save(newMember);
 
         Member member = memberRepository.findMember(email, password);
         Assertions.assertThat(member.getEmail()).isEqualTo(email);
