@@ -5,7 +5,6 @@ import com.wanted.preonboarding.dto.MemberForm;
 import com.wanted.preonboarding.dto.ResponseDto;
 import com.wanted.preonboarding.exception.EncryptException;
 import com.wanted.preonboarding.service.MemberService;
-import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -15,31 +14,25 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
+//@Tag(name="Member",description = "회원가입,로그인처리 API 목록")
 public class MemberController {
 
     private final MemberService memberService;
     private final Encryptor encryptor;
 
-
-    @PostMapping("/member")
-    public ResponseEntity<?> postMember(@Valid @ModelAttribute MemberForm memberForm) {
+    @PostMapping(value="/member")
+    public ResponseEntity<?> postMember(@Valid @RequestBody MemberForm memberForm) {
 
         try{
             String password = encryptor.encryptMessage(memberForm.getPassword().getBytes(StandardCharsets.UTF_8));
@@ -51,7 +44,7 @@ public class MemberController {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<?> loginMember(@Valid @ModelAttribute MemberForm memberForm, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> loginMember(@Valid @RequestBody MemberForm memberForm, HttpServletResponse response) {
         try{
             String password = encryptor.encryptMessage(memberForm.getPassword().getBytes(StandardCharsets.UTF_8));
             memberForm.setPassword(password);
