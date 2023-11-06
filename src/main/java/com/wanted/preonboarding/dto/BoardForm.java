@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +14,6 @@ public class BoardForm {
 
     private String content;
 
+    @JsonIgnore
     private String author;
 }

@@ -14,21 +14,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@ControllerAdvice
+@RestController
+@RestControllerAdvice
 @RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
 
     @PostMapping("/board")
-    public ResponseEntity<?> postBoard(@RequestAttribute(name="user") UserDto userDto, @Valid @ModelAttribute BoardForm boardForm){
+    public ResponseEntity<?> postBoard(@RequestAttribute(name="user") UserDto userDto, @Valid @RequestBody BoardForm boardForm){
         boardForm.setAuthor(userDto.getEmail());
         Long id = boardService.createBoard(boardForm);
         return new ResponseEntity<>(new ResponseDto<>("게시판 생성이 완료되었습니다.",null), HttpStatus.CREATED);
@@ -47,7 +46,7 @@ public class BoardController {
     @PutMapping("/board/{id}")
     public ResponseEntity<?> updateBoard(
             @RequestAttribute(name="user") UserDto userDto,
-            @PathVariable(name="id") long id, @ModelAttribute BoardForm boardForm){
+            @PathVariable(name="id") long id, @RequestBody BoardForm boardForm){
         boardForm.setAuthor(userDto.getEmail());
         boardService.updateBoard(id,boardForm);
         return new ResponseEntity<>(new ResponseDto<>("변경되었습니다",null),HttpStatus.OK);
